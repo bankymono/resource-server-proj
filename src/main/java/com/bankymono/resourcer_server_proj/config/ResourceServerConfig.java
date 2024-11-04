@@ -32,6 +32,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
         resources.tokenStore(tokenStore());
         resources.resourceId(claimAud);
+        resources.expressionHandler(handler());
     }
 
     @Bean
@@ -43,7 +44,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .mvcMatchers(HttpMethod.DELETE, "/**")
-                .hasAnyAuthority("fitnessadmin")
+                .hasAuthority("fitnessadmin")
                 .anyRequest().authenticated();
     }
 
@@ -53,9 +54,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
 
     @Bean
-    public SecurityEvaluationContextExtension
-    securityEvaluationContextExtension() {
-
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
         return new SecurityEvaluationContextExtension();
     }
 
